@@ -25,15 +25,17 @@ voor mogelijke zet geldt syntax:
     0 = geen mogelijke zet(default)
 */
 
-let board = [["rB0","kB0","bB0","QB0","KB0","bB0","kB0","rB0"],
-             ["pB0","pB0","pB0","pB0","pB0","pB0","pB0","pB0"],
-             ["000","000","000","000","000","000","000","000"],
-             ["000","000","000","000","000","000","000","000"],
-             ["000","000","000","000","000","000","000","000"],
-             ["000","000","000","000","000","000","000","000"],
-             ["pW0","pW0","pW0","pW0","pW0","pW0","pW0","pW0"],
-             ["rW0","kW0","bW0","QW0","KW0","bW0","kW0","rW0"]];
+let board = [   [["r","B","0"],["k","B","0"],["b","B","0"],["Q","B","0"],["K","B","0"],["b","B","0"],["k","B","0"],["r","B","0"]],
+                [["p","B","0"],["p","B","0"],["p","B","0"],["p","B","0"],["p","B","0"],["p","B","0"],["p","B","0"],["p","B","0"]],
+                [["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"]],
+                [["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"]],
+                [["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"]],
+                [["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"],["0","0","0"]],
+                [["p","W","0"],["p","W","0"],["p","W","0"],["p","W","0"],["p","W","0"],["p","W","0"],["p","W","0"],["p","W","0"]],
+                [["r","W","0"],["k","W","0"],["b","W","0"],["Q","W","0"],["K","W","0"],["b","W","0"],["k","W","0"],["r","W","0"]]]
 let turnCount = 0;
+let selectedRow;
+let selectedCol;
 
 window.onload = function(){
     drawBoard()
@@ -50,7 +52,8 @@ function generateBoardHTML(board){
     for(let i = 0; i < board.length; i++){
         let rowHTML = '<tr>';
         for(let j = 0; j < board[i].length; j++){
-            rowHTML += generateTile(board[i][j], i, j);
+            let temp = generateTile(board[i][j], i, j);
+            rowHTML += temp;
         }
         rowHTML += "</tr>";
         tableInnerHTML += rowHTML;
@@ -127,6 +130,135 @@ function generateTile(cel, row, col){
     //de achtergrondkleur van de cel alterneert tussen licht en donker
     let tileStyle = "A";
     if (((row%2)+(col%2))%2 != 0) tileStyle = "B";
+    //de achgergrondkleur van het geselecteerde stuk krijgt ook een aparte kleur
+    if(col == selectedCol && row == selectedRow) tileStyle="Selected";
 
-    return `<td class="boardElement tileStyle${tileStyle}">${squareContent}</td>`;
+    return `<td class="boardElement tileStyle${tileStyle}" onclick="squareClickHandler(this)">${squareContent}</td>`;
 }
+
+function squareClickHandler(event){
+    let col = event.cellIndex;
+    let row = event.parentNode.rowIndex;
+    let type = board[row][col][0];
+    let color = board[row][col][1];
+    let possibleMove = board[row][col][2];
+
+    let curTurn = "W";
+    if(turnCount%2 != 0) curTurn = "B";
+
+    //check of het ingedrukte vakje een stuk van de juiste kleur is
+    if(color == curTurn){
+        selectedRow = row;
+        selectedCol = col;
+        removeOldPossibleMoves(board)
+        findPossibleMoves(board, row, col);
+        drawBoard();
+    }
+
+    //check of het ingedrukte vakje een mogelijke zet is voor het eerder geselecteerde stuk
+    if(possibleMove == "M" || possibleMove == "C"){
+        removeOldPossibleMoves(board);
+        board[row][col] = board[selectedRow][selectedCol];
+        board[selectedRow][selectedCol] = ["0","0","0"];
+        drawBoard();
+        turnCount++;
+    }
+}
+
+function findPossibleMoves(board, row, col){
+    let type = board[row][col][0];
+    let color = board[row][col][1];
+    let opColor = "B";
+    let boardAdjustedForTurn = [];
+
+    if(color == "B"){
+        opColor = "W";
+        boardAdjustedForTurn = flipBoard(board);
+        row = 7-row;
+    }
+    else{
+        boardAdjustedForTurn = board;
+    }
+
+    //checken welk soort stuk aangeklikt is en gepaste functie oproepen om zetten te bepalen
+    switch(type){
+        case 'p':
+            board = findMovesPawn(boardAdjustedForTurn, row, col, color, opColor);
+            break;
+        case 'r':
+            findMovesRook(boardAdjustedForTurn, row, col, color, opColor);
+            break;
+        case 'k':
+            findMovesKnight(boardAdjustedForTurn, row, col, color, opColor);
+            break;
+        case 'b':
+            findMovesBishop(boardAdjustedForTurn, row, col, color, opColor);
+            break;
+        case 'Q':
+            findMovesQueen(boardAdjustedForTurn, row, col, color, opColor);
+            break;
+        case 'K':
+            findMovesKing(boardAdjustedForTurn, row, col, color, opColor);
+            break;
+    }
+
+    if(color =="B") board = flipBoard(boardAdjustedForTurn)
+    return board;
+}
+
+function flipBoard(board){
+    let flippedBoard = []
+    for(let i = board.length-1; i >= 0; i--) flippedBoard[7-i] = board[i];
+    return flippedBoard;
+}
+
+function findMovesPawn(board, row, col, color, opColor){
+    //check of pion verplaats kan worden, zonder een stuk te pakken
+    if(board[row-1][col][0] == "0"){
+        board[row-1][col][2] = "M";
+    }
+    if(row == 6 && board[row-2][col][0] == "0"){
+        board[row-2][col][2] = "M";
+    }
+
+    //check of pion een stuk kan pakken
+    if(col > 0&& board[row-1][col-1][1] == opColor){
+        board[row-1][col-1][2] = "C";
+    }
+    if(col < 7 && board[row-1][col+1][1] == opColor){
+        board[row-1][col+1][2] = "C";
+    }
+
+    return board;
+}
+
+function removeOldPossibleMoves(board){
+    for(let i = 0; i < board.length; i++){
+        for(let j = 0; j < board[i].length; j++){
+            board[i][j][2] = "0";
+        }
+    }
+
+    return board;
+}
+
+function findMovesRook(board, row, col, color, opColor){
+    
+}
+
+function findMovesKnight(board, row, col, color, opColor){
+    
+}
+
+function findMovesBishop(board, row, col, color, opColor){
+    
+}
+
+function findMovesQueen(board, row, col, color, opColor){
+    
+}
+
+function findMovesKing(board, row, col, color, opColor){
+    
+}
+
