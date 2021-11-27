@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <script src="code.js"></script>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css"> 
+    </head>
+        <body style="background-color: whitesmoke;">
+        <div id="gameContainer">
+            <div id="left">
+                <div id="infoWhiteContainer" class="infoContainer"> 
+                    <div id="capturedPiecesBlackContainer" class="capturedPiecesContainer">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                        <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                    </div>
+                    <div id="timerBlackContainer" class="timerContainer">
+                        30:00
+                    </div>
+                </div>
+                <div id="boardContainer">
+                    <table class="board" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td class="boardElement tileStyleA"><img src="/images/rookBlack.svg" alt="rook black" class="activePiece"><div class="rowIndicator">8</div></td>
+                            <td class="boardElement tileStyleB"><img src="/images/knightBlack.svg" alt="knight black" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/bishopBlack.svg" alt="bishop black" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/queenBlack.svg" alt="queen black" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/kingBlack.svg" alt="king black" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/bishopBlack.svg" alt="bishop black" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/knightBlack.svg" alt="knight black" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/rookBlack.svg" alt="rook black" class="activePiece"></td>
+                        </tr>
+                        <tr>
+                            <td class="boardElement tileStyleB"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"><div class="rowIndicator">7</div></td>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnBlack.svg" alt="pawnBlack black" class="activePiece"><div class="possibleCapture"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="boardElement tileStyleA"><div class="rowIndicator">6</div></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                        </tr>
+                        <tr>
+                            <td class="boardElement tileStyleB"><div class="rowIndicator">5</div></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                        </tr>
+                        <tr>
+                            <td class="boardElement tileStyleA"><div class="rowIndicator">4</div></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                        </tr>
+                        <tr>
+                            <td class="boardElement tileStyleB"><div class="rowIndicator">3</div></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"></td>
+                            <td class="boardElement tileStyleA"></td>
+                            <td class="boardElement tileStyleB"><span class="possibleMove"></span></td>
+                            <td class="boardElement tileStyleA"><span class="possibleMove"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"><div class="rowIndicator">2</div></td>
+                            <td class="boardElement tileStyleB"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"></td>
+                            <td class="boardElement tileStyleB selectedTile"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"></td>
+                            <td class="boardElement tileStyleA"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"></td>
+                            <td class="boardElement tileStyleB"><img src="/images/pawnWhite.svg" alt="pawn white" class="activePiece"></td>
+                        </tr>
+                        <tr>
+                            <td class="boardElement tileStyleB"><img src="/images/rookWhite.svg" alt="rook white" class="activePiece"><div class="rowIndicator">1</div><div class="colIndicator">a</div></td>
+                            <td class="boardElement tileStyleA"><img src="/images/knightWhite.svg" alt="knight white" class="activePiece"><div class="colIndicator">b</div></td>
+                            <td class="boardElement tileStyleB"><img src="/images/bishopWhite.svg" alt="bishop white" class="activePiece"><div class="colIndicator">c</div></td>
+                            <td class="boardElement tileStyleA"><img src="/images/queenWhite.svg" alt="queen white" class="activePiece"><div class="colIndicator">d</div></td>
+                            <td class="boardElement tileStyleB"><img src="/images/kingWhite.svg" alt="king white" class="activePiece"><div class="colIndicator">e</div></td>
+                            <td class="boardElement tileStyleA"><img src="/images/bishopWhite.svg" alt="bishop white" class="activePiece"><div class="colIndicator">f</div></td>
+                            <td class="boardElement tileStyleB"><img src="/images/knightWhite.svg" alt="knight white" class="activePiece"><div class="colIndicator">g</div></td>
+                            <td class="boardElement tileStyleA"><img src="/images/rookWhite.svg" alt="rook white" class="activePiece"><div class="colIndicator">h   </div></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="infoWhiteContainer" class="infoContainer">
+                    <div id="capturedPiecesWhiteContainer" class="capturedPiecesContainer">
+
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+                            <img src="/images/pawnBlack.svg" alt="pawn black" class="capturedPiece">
+
+                        </div>
+                        <div id="timerWhiteContainer" class="timerContainer">
+                            30:00
+                        </div>
+                    </div>
+                </div>
+                <div id="right">
+                    <div id="selectOptions">
+                        <div id="timerSelect">
+                            <div id="timerSelectDropdown">
+                                <form ></form>
+                            </div>
+                                <div id="timerSelectButtonContainer">
+                                    <button id="timerSelectButton" onclick="reset_button_click_handler(this)">confirm</button>
+                                </div>
+                            </div>
+                            <div id="resetButtonContainer">
+                                <button id="resetButton" onclick="reset_button_click_handler(this)">reset game</button>
+                            </div>
+                        </div>
+                        <div id="moveHistory">
+                            <table id="tableMoveHistory">
+                                <tr>
+                                    <td><img src="/images/pawnWhite.svg" height="20" width="20"></td>
+                                    <td>2d</td>
+                                    <td>4d</td>
+                                </tr>
+                                <tr>
+                                    <td><img src="/images/pawnWhite.svg" height="20" width="20"></td>
+                                    <td>2d</td>
+                                    <td>4d</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </body>
+</html>
