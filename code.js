@@ -202,7 +202,7 @@ function findPossibleMoves(board, row, col){
             break;
     }
 
-    if(color =="B") board = flipBoard(boardAdjustedForTurn)
+    if(color =="B") board = flipBoard(boardAdjustedForTurn);    
     return board;
 }
 
@@ -210,26 +210,6 @@ function flipBoard(board){
     let flippedBoard = []
     for(let i = board.length-1; i >= 0; i--) flippedBoard[7-i] = board[i];
     return flippedBoard;
-}
-
-function findMovesPawn(board, row, col, color, opColor){
-    //check of pion verplaats kan worden, zonder een stuk te pakken
-    if(board[row-1][col][0] == "0"){
-        board[row-1][col][2] = "M";
-    }
-    if(row == 6 && board[row-2][col][0] == "0"){
-        board[row-2][col][2] = "M";
-    }
-
-    //check of pion een stuk kan pakken
-    if(col > 0&& board[row-1][col-1][1] == opColor){
-        board[row-1][col-1][2] = "C";
-    }
-    if(col < 7 && board[row-1][col+1][1] == opColor){
-        board[row-1][col+1][2] = "C";
-    }
-
-    return board;
 }
 
 function removeOldPossibleMoves(board){
@@ -242,16 +222,166 @@ function removeOldPossibleMoves(board){
     return board;
 }
 
+function findMovesPawn(board, row, col, color, opColor){
+    //check of pion verplaats kan worden, zonder een stuk te pakken
+    if(board[row-1][col][0] == "0"){
+        board[row-1][col][2] = "M";
+    }
+    if(row == 6 && board[row-2][col][0] == "0"){
+        board[row-2][col][2] = "M";
+    }
+
+    //check of pion een stuk kan pakken
+    if(col > 0 && board[row-1][col-1][1] == opColor){
+        board[row-1][col-1][2] = "C";
+    }
+    if(col < 7 && board[row-1][col+1][1] == opColor){
+        board[row-1][col+1][2] = "C";
+    }
+
+    return board;
+}
+
+
 function findMovesRook(board, row, col, color, opColor){
     
 }
 
 function findMovesKnight(board, row, col, color, opColor){
+    // 2 omhoog, 1 links
+    if(col > 0 && row > 1 && board[row-2][col-1][1] == "0"){
+        board[row-2][col-1][2] = "M";
+    }
+    if(col > 0 && row > 1 && board[row-2][col-1][1] == opColor){
+        board[row-2][col-1][2] = "C";
+    }
+
+    // 2 omhoog, 1 rechts
+    if(col < 7 && row > 1 && board[row-2][col+1][1] == "0"){
+        board[row-2][col+1][2] = "M";
+    }
+    if(col < 7 && row > 1 && board[row-2][col+1][1] == opColor){
+        board[row-2][col+1][2] = "C";
+    }
     
+    //2 rechts, 1 omhoog
+    if(col < 6 && row > 0 && board[row-1][col+2][1] == "0"){
+        board[row-1][col+2][2] = "M";
+    }
+    if(col < 6 && row > 0 && board[row-1][col+2][1] == opColor){
+        board[row-1][col+2][2] = "C";
+    }
+
+    //2 rechts, 1 omlaag
+    if(col < 6 && row < 7 && board[row+1][col+2][1] == "0"){
+        board[row+1][col+2][2] = "M";
+    }
+    if(col < 6 && row < 7 && board[row+1][col+2][1] == opColor){
+        board[row+1][col+2][2] = "C";
+    }
+
+    //2 omlaag, 1 rechts
+    if(col < 7 && row < 6 && board[row+2][col+1][1] == "0"){
+        board[row+2][col+1][2] = "M";
+    }
+    if(col < 7 && row < 6 && board[row+2][col+1][1] == opColor){
+        board[row+2][col+1][2] = "C";
+    }   
+
+    //2 omlaag, 1 links
+    if(col > 0 && row < 6 && board[row+2][col-1][1] == "0"){
+        board[row+2][col-1][2] = "M";
+    }
+    if(col > 0 && row < 6 && board[row+2][col-1][1] == opColor){
+        board[row+2][col-1][2] = "C";
+    }
+
+    //2 links, 1 omlaag
+    if(col > 1 && row < 7 && board[row+1][col-2][1] == "0"){
+        board[row+1][col-2][2] = "M";
+    }
+    if(col > 1 && row < 7 && board[row+1][col-2][1] == opColor){
+        board[row+1][col-2][2] = "C";
+    }
+
+    //2 links, 1 omhoog
+    if(col > 1 && row > 0 && board[row-1][col-2][1] == "0"){
+        board[row-1][col-2][2] = "M";
+    }
+    if(col > 1 && row > 0 && board[row-1][col-2][1] == opColor){
+        board[row-1][col-2][2] = "C";
+    }
 }
 
 function findMovesBishop(board, row, col, color, opColor){
+    //check diagonaal stijgend
+    //lineariseren
+    let curCol = col;
+    let curRow = row;
+    let offset = 0;
+    while(curCol != 0 && curRow != 7){
+        offset++;
+        curCol--;
+        curRow++;
+    }
+    startRow = curRow;
+    startCol = curCol;
+
+    let array = [];
+    let i = 0;
+    while(curCol != 8 && curRow != -1){
+        array[i] = board[curRow][curCol];
+        i++;
+        curCol++;
+        curRow--;
+    }
+    array = findMovesLinearised(array, offset, color, opColor);
+
+    //geupadte array terug in het bord steken
+    curRow = startRow;
+    curCol = startCol;
+    i = 0;
+    while(curCol != 8 && curRow != -1){
+        board[curRow][curCol] = array[i];
+        i++;
+        curCol++;
+        curRow--;
+    }
     
+
+    //check diagonaal dalend
+    //lineariseren
+    curCol = col;
+    curRow = row;
+    offset = 0;
+    while(curCol != 0 && curRow != 0){
+        offset++;
+        curCol--;
+        curRow--;
+    }
+    startRow = curRow;
+    startCol = curCol;
+
+    array = [];
+    i = 0;
+    while(curCol != 8 && curRow != 8){
+        array[i] = board[curRow][curCol];
+        i++;
+        curCol++;
+        curRow++;
+    }
+    array = findMovesLinearised(array, offset, color, opColor);
+
+    //geupadte array terug in het bord steken
+    curRow = startRow;
+    curCol = startCol;
+    i = 0;
+    while(curCol != 8 && curRow != 8){
+        board[curRow][curCol] = array[i];
+        i++;
+        curCol++;
+        curRow++;
+    }
 }
 
 function findMovesQueen(board, row, col, color, opColor){
@@ -262,3 +392,32 @@ function findMovesKing(board, row, col, color, opColor){
     
 }
 
+function findMovesLinearised(array, offset, color, opColor){
+    //naar links checken
+    let curPos = offset - 1;
+    while(curPos > 0 && array[curPos][0] == "0"){
+        array[curPos][2] = "M";
+        curPos--;
+    }
+    if(curPos != -1 && array[curPos][1] == opColor){
+        array[curPos][2] = "C";
+    }
+    if(curPos != -1 && array[curPos][0] == "0"){
+        array[curPos][2] = "M";
+    }
+
+    //naar rechts checken
+    curPos = offset + 1;
+    while(curPos < array.length-1 && array[curPos][0] == "0"){
+        array[curPos][2] = "M";
+        curPos++;
+    }
+    if(curPos != array.length && array[curPos][1] == opColor){
+        array[curPos][2] = "C";
+    }
+    if(curPos != array.length && array[curPos][0] == "0"){
+        array[curPos][2] = "M";
+    }
+
+    return array;
+}
