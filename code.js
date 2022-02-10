@@ -1,3 +1,5 @@
+/*test*/
+
 /*
 interne representatie:
 elke cel bestaat uit 3 characters, 1 voor type, 1 voor kleur en 1 om aan te
